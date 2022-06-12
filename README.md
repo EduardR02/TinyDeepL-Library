@@ -22,6 +22,12 @@ Tiny Deep Learning Library is a Python project in which I wrote the basic functi
 
 This project does not use GPU.
 
+## Why this is useful to me
+
+Because layers are very modular, each derivative and implementation has to exist on its own, being complete on its own.
+Everything had to work like legos, which is why I had to understand each part better. A good example where this helped a
+lot is the usual softmax - cross-entropy output layer. Often books and explanations only show the combined result, but for me, I just had to understand how they work separately. Even if some combinations do not make sense (like relu and cross-entropy), I still wanted it to be possible for it to work (even if the results are useless).  
+After my previous NN from scratch project, which I did the opposite way (because I was still learning the basics), meaning very rigid, and therefore less was possible, I knew that I still had some knowledge gaps because of this, which is why this project exists.
 
 ## Installation
 
