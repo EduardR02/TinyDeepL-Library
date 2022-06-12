@@ -1,0 +1,4 @@
+*.npy
+models/
+_pycache_/
+.idea/
