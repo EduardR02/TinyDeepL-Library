@@ -1,11 +1,11 @@
-import model
+import model as model_file
 import dataset
 import layers
 
 
 if __name__ == "__main__":
     input_size, output_size = 784, 10
-    model = model.Model("Cool model")
+    model = model_file.Model("Cool model")
     model.add(layers.FullyConnected(800, activation="relu", use_bias=True, input_shape=(1, input_size)))
     model.add(layers.FullyConnected(50, activation="relu", use_bias=True))
     model.add(layers.FullyConnected(10, activation="softmax", use_bias=False))

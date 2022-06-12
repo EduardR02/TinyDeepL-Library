@@ -1,0 +1,5 @@
+numpy
+scipy
+# to use mnist and cifar
+mnist
+cifar10_web
