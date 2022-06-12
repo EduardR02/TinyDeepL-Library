@@ -188,6 +188,7 @@ class InvertedDropout(Layer):
         super(InvertedDropout, self).set_output_shape(output_shape)
 
 
+# not correctly implemented yet, because for flatten to be useful other layers beside fully connected are necessary :)
 class Flatten(Layer):
     # input_shape parameter in case you want it as first layer, needs to match input in that case
     # make sure to NOT flatten the batch dimension!

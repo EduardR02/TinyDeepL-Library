@@ -3,7 +3,6 @@ import loss
 import optimizers
 import metrics
 import utils
-import numpy as np
 
 
 class Model:
@@ -97,11 +96,6 @@ class Model:
             self.update_progress_bar((i + 1) * labels[0].shape[0], len(labels) * labels[0].shape[0])
 
     def apply_gradients(self, weight_gradients, bias_gradients):
-        """
-        :param: weight_gradients: list of weights gradients where the index corresponds to the layer
-        :param: bias_gradients: nested list of errors where the first element is a boolean, second the actual bias error
-            incomplete, some layers have different params or do not have params, also not every layer has method
-        """
         for i in range(len(self.layers)):
             self.layers[i].apply_gradients(weight_gradients[i], bias_gradients[i])
 
@@ -148,6 +142,7 @@ class Model:
         self.accuracy_metrics.update_metrics(output, label)
 
     def update_progress_bar(self, current_element, total_elements, epoch=0):
+        # convenience method
         utils.progressBar(current_element, total_elements, epoch,
                           self.accuracy_metrics.get_metrics(), self.loss_metrics.get_metrics())
         if current_element >= total_elements:
@@ -189,7 +184,8 @@ class Model:
         return optimizer
 
     def load_model_weights(self, name=None):
-        # for the model weights to load properly the model needs to be built exactly like the one that was saved
+        # for the model weights to load properly the model needs to be built exactly like the one that was saved,
+        # otherwise the dims will not match
         file_manager.ModelWeightsLoader.load(self, name)
 
     def save_model_weights(self, name=None):

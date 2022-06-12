@@ -1,9 +1,6 @@
 import model
 import dataset
 import layers
-import utils
-import numpy as np
-import tests
 
 
 if __name__ == "__main__":
