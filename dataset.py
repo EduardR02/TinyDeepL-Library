@@ -36,16 +36,16 @@ def get_test_data_cifar10():
     return test_images, test_labels
 
 
-def data_augment_mnist(data, offset):
+def data_augment_mnist(data, offset_x, offset_y):
     # assume square image
     if len(data.shape) < 3:
         side_len = int(data.shape[-1]**0.5)
         data = data.reshape((-1, side_len, side_len))
     original_data = data
-    data = np.concatenate((data, shift_data(original_data, offset, 0)), axis=0)
-    data = np.concatenate((data, shift_data(original_data, -offset, 0)), axis=0)
-    data = np.concatenate((data, shift_data(original_data, 0, offset)), axis=0)
-    data = np.concatenate((data, shift_data(original_data, 0, -offset)), axis=0)
+    data = np.concatenate((data, shift_data(original_data, offset_x, 0)), axis=0)
+    data = np.concatenate((data, shift_data(original_data, -offset_x, 0)), axis=0)
+    data = np.concatenate((data, shift_data(original_data, 0, offset_y)), axis=0)
+    data = np.concatenate((data, shift_data(original_data, 0, -offset_y)), axis=0)
     print(data.shape)
     return data
 
