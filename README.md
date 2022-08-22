@@ -19,6 +19,7 @@ Tiny Deep Learning Library is a Python project in which I wrote the basic functi
 * Vectorized mini-batches (using numpy)
 * Saving and loading models
 * Preloaded mnist and cifar10 datasets
+* Basic data augmentation
 
 This project does not use GPU.
 
