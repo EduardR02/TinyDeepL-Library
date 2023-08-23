@@ -13,6 +13,14 @@ class Activation_Function:
         raise NotImplementedError()
 
 
+class Linear(Activation_Function):
+    def forward(self, layer_outputs):
+        return layer_outputs
+
+    def derivative(self, layer_activations):
+        return np.ones(shape=layer_activations.shape)
+
+
 class Relu(Activation_Function):
     def forward(self, layer_outputs):
         return np.maximum(0.0, layer_outputs)

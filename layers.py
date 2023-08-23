@@ -39,8 +39,10 @@ class Layer:
                 self.activation = activations.Sigmoid(self.activation)
             elif self.activation == "softmax":
                 self.activation = activations.Softmax(self.activation)
+            elif self.activation == "linear":
+                self.activation = activations.Linear(self.activation)
             else:
-                self.activation = None
+                self.activation = activations.Linear(self.activation)
 
     def init_parameters(self):
         if self.has_parameters:
@@ -114,8 +116,9 @@ class FullyConnected(Layer):
         """
         full_error = propagated_error if mult_error_and_actv else self.mult_error_with_derivative_of_actv_func(propagated_error, layer_outputs)
         weight_gradients = np.matmul(np.transpose(previous_layer_outputs), full_error)
-        # return full_error because that is also the bias_gradients, sum it because over batch
-        return weight_gradients, np.sum(full_error, axis=0)
+        # return full_error because that is also the bias_gradients, divide by batch size
+        batch_size = full_error.shape[0]
+        return weight_gradients / batch_size, np.sum(full_error, axis=0) / batch_size
 
     def apply_gradients(self, weight_gradients, bias_gradients):
         # plus and not minus because that is handled in the optimizers

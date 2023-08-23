@@ -80,7 +80,7 @@ class Model:
         for i in range(len(samples)):
             outputs = self.feed_forward(samples[i])
             weight_gradients, bias_grads = self.calculate_gradients(outputs, labels[i])
-            # optimizers are applied in this step
+            # optimizers are applied in this step, grads are already divided by batch size
             weight_gradients = self.optimizer.optimize(weight_gradients)
             bias_grads = self.bias_optimizer.optimize(bias_grads)
             self.apply_gradients(weight_gradients, bias_grads)
