@@ -50,6 +50,43 @@ def data_augment_mnist(data, offset_x, offset_y):
     return data
 
 
+def squish_and_stretch_mnist(samples, labels, factor, runs_through_dataset):
+    # use normal distribution to randomly squish and stretch, but altered by factor
+    reshaped_samples = []
+
+    def get_scaling_factor(distribution, j):
+        # if above zero stretch, if below zero squish
+        if distribution[j] > 0:
+            return 1 + distribution[j] * factor, 1.0
+        else:
+            return 1.0, (1 - distribution[j] * factor)
+
+    samples = samples.reshape((-1, 28, 28))
+    for i in range(runs_through_dataset):
+        distribution = np.random.normal(size=(samples.shape[0]))
+        for j in range(samples.shape[0]):
+            x_scaling, y_scaling = get_scaling_factor(distribution, j)
+            # always only either stretch x or y, as after padding this translates
+            # to either squishing or stretching depending on axis
+            rescaled_image = cv2.resize(samples[j], None, fx=x_scaling, fy=y_scaling, interpolation=cv2.INTER_LINEAR)
+            # now pad to get square image again
+            if x_scaling == 1:
+                # there is an off by one error here in case of odd numbers, but it doesnt matter because resize takes care of it
+                padding = int(rescaled_image.shape[0] - rescaled_image.shape[1]) // 2
+                # pad non altered axis with black
+                rescaled_image = np.pad(rescaled_image, ((0, 0), (padding, padding)), mode="constant", constant_values=-1)
+            else:
+                padding = int(rescaled_image.shape[1] - rescaled_image.shape[0]) // 2
+                rescaled_image = np.pad(rescaled_image, ((padding, padding), (0, 0)), mode="constant", constant_values=-1)
+            # now resize to 28x28
+            rescaled_image = cv2.resize(rescaled_image, (28, 28), interpolation=cv2.INTER_LINEAR)
+            reshaped_samples.append(rescaled_image)
+    reshaped_samples = np.stack(reshaped_samples, axis=0)
+    labels = np.concatenate([labels for _ in range(runs_through_dataset)], axis=0)
+    print(reshaped_samples.shape, labels.shape)
+    return reshaped_samples, labels
+
+
 def shift_data(data, shift_x, shift_y):
     new_data = np.copy(data)
     if shift_x > 0:
